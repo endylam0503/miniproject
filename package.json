@@ -1,0 +1,21 @@
+{
+    "name": "server",
+    "description": "Miniproject",
+    "author": "Endy Lam <endylam0503@gmail.com>",
+    "version": "0.0.1",
+    "dependencies": {
+        "body-parser": "*",
+        "cookie-session": "*",
+        "ejs": "*",
+        "express": "*",
+        "mongodb": "^2.2.36",
+        "nodemon": "^1.11.0"
+    },
+    "engine": "node >= 0.10.0",
+    "scripts": {
+        "start": "nodemon server"
+    },
+    "devDependencies": {
+        "nodemon": "^1.18.6"
+    }
+}
