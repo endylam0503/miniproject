@@ -1,0 +1,26 @@
+<html>
+   <body>
+     <h1>Restaurant</h1>
+     <p>User: <%= userId %></p>
+<table>
+  <tr>
+    <th>Restaurant_id</th>
+    <th>Name</th>
+    <th>Owner</th>
+  </tr>
+        <% for(var i=0; i< result.length; i++) {%>
+<tr>
+            <td><%=result[i].restaurant_id %></td>
+            <td><a href="/display?_id=<%= result[i]._id %>"><%=result[i].name %></td>
+            <td><%=result[i].owner %></td>
+            <td><%=result[i]._id %></td>
+</tr>
+
+            <%}%>
+    </table>
+<form action="/query" method="get">
+  Search:<input type="text" name="search" required>
+  <input type="submit" value="Search">
+</form>
+   </body>
+</html>

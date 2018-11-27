@@ -1,0 +1,56 @@
+<html>
+   <body>
+     <h1><%= result.name %></h1>
+     <p>
+       <strong>Restaurant Id: </strong>
+     <%=result.restaurant_id ||'Not Provided'%>
+     </p>
+     <p>
+       <strong>Borough: </strong>
+     <%=result.borough ||'Not Provided'%>
+     </p>
+     <p>
+       <strong>Cuisine: </strong>
+     <%=result.cuisine ||'Not Provided'%>
+     </p>
+     <p>
+       <strong>Street: </strong>
+     <%=result.address.street ||'Not Provided'%>
+     </p>
+     <p>
+       <strong>Building: </strong>
+     <%=result.address.building ||'Not Provided'%>
+     </p>
+     <p>
+       <strong>Zipcode: </strong>
+     <%=result.address.zipcode ||'Not Provided'%>
+     </p>
+     <p>
+         <strong>Created by: </strong>
+         <%= result.owner||'Not Provided' %>
+     </p>
+     <p>
+       <strong>Rating: </strong>
+       <ol>
+         <% for(var i=0; i< result.grade.length; i++) {%>
+         <li><%=result.grade[i].score %> (<%=result.grade[i].user %>) </li>
+         <%}%>
+       </ol>
+     </p>
+     <p>
+     <strong>Photo: </strong><% if(Object.keys(result.photo).length==0) { %>
+     <i>No photo found!</i> <% } else { %>
+         <img src=<%="data:" +result.photo.mimetype+ ";base64,"+JSON.parse(JSON.stringify(result.photo.data)) %> />
+       <% } %>
+
+     </p>
+<a class="btn btn-success" role="button" href=<%="edit/" +result._id+"?owner="+result.owner %>>
+    <span class="glyphicon glyphicon-edit"></span> Edit
+    <a class="btn btn-success" role="button" href=<%="rate/" +result._id %>>
+        <span class="glyphicon glyphicon-edit"></span> Rate
+<a class="btn btn-success" role="button" href=<%="delete/" +result._id+"?owner="+result.owner %>>
+    <span class="glyphicon glyphicon-edit"></span> Delete
+
+
+   </body>
+</html>

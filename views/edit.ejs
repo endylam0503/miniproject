@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Register Login with Authentication</title>
+<!--Custom Theme files-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Register Login Widget template Responsive, Login form web template,Flat Pricing tables,Flat Drop downs  Sign up Web Templates, Flat Web Templates, Login Signup Responsive web template, SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files -->
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!--web-fonts-->
+<link href='//fonts.googleapis.com/css?family=Jura:400,300,500,600' rel='stylesheet' type='text/css'>
+<!--//web-fonts-->
+</head>
+<body>
+
+	<h1>Edit Restaurant <%=result.name %></h1>
+<p><%=result._id %></p>
+
+	<div class="main">
+
+		<div class="agile">
+			<div class="signin-form profile">
+
+
+				<div class="login-form">
+					<form action= <%= "/edit/"+ result._id%> method="post">
+            <div>
+						<input type="number" name="restaurant_id" placeholder="Restaurant_Id" value="<%= result.restaurant_id||"" %>">
+            </div>
+            <div>
+            <input type="text" name="name" placeholder="Name" required="" value="<%= result.name||"" %>">
+            </div>
+            <div>
+            <input type="text" name="borough" placeholder="Borough" value="<%= result.borough||"" %>">
+            </div>
+            <div>
+            <input type="text" name="cuisine" placeholder="Cuisine" value="<%= result.cuisine||"" %>">
+            </div>
+            <div>
+            <input type="text" name="photo" placeholder="Photo" value="<%= result.photo||"" %>">
+            </div>
+            <div>
+            <input type="text" name="photo_mimetype" placeholder="Photo mimetype" value="<%= result.photo_mimetype||"" %>">
+            </div>
+            <div>
+            <input type="text" name="street" placeholder="Street" value="<%= result.address.street||"" %>">
+            </div>
+            <div>
+            <input type="text" name="building" placeholder="Building" value="<%= result.address.building||"" %>">
+            </div>
+            <div>
+            <input type="number" name="zipcode" placeholder="Zipcode" value="<%= result.address.zipcode||"" %>">
+            </div>
+            <div>
+            <input type="number" name="latitude" placeholder="Gps latitude" value="<%= result.address.coord.latitude||"" %>">
+            </div>
+            <div>
+            <input type="number" name="longtitude" placeholder="Gps longtitude" value="<%= result.address.coord.longtitude||"" %>">
+            </div>
+						<input type="submit" value="Update">
+					</form>
+				</div>
+
+			</div>
+		</div>
+		<div class="clear"></div>
+
+	</div>
+
+
+</body>
+</html>

@@ -8,7 +8,9 @@
         "cookie-session": "*",
         "ejs": "*",
         "express": "*",
+        "express-fileupload": "^0.3.0",
         "mongodb": "^2.2.36",
+        "multer": "1.1.0",
         "nodemon": "^1.11.0"
     },
     "engine": "node >= 0.10.0",
