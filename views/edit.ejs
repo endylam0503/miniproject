@@ -34,10 +34,10 @@
             <input type="number" name="zipcode" placeholder="Zipcode" value="<%= result.address.zipcode||"" %>">
             </div>
             <div>
-            <input type="number" name="latitude" placeholder="Gps latitude" value="<%= result.address.coord.latitude||"" %>">
+            <input type="string" name="latitude" placeholder="Gps latitude" value="<%= result.address.coord.latitude||"" %>">
             </div>
             <div>
-            <input type="number" name="longtitude" placeholder="Gps longtitude" value="<%= result.address.coord.longtitude||"" %>">
+            <input type="string" name="longtitude" placeholder="Gps longtitude" value="<%= result.address.coord.longtitude||"" %>">
             </div>
 						<input type="file" name="rtPhoto" accept="image/*" onchange="loadImageFileAsURL()">
 		            <div class="input-margin"></div>
