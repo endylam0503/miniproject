@@ -1,7 +1,13 @@
 <html>
+<title>COMPS381F 2018 Miniproject</title>
    <body>
      <h1>Restaurant</h1>
-     <p>User: <%= userId %></p>
+     <p><% if (userId == null){ %>
+       User: Visitor
+    <% } else { %>
+       User: <%= userId %></p>
+       <% } %>
+     <h3><a href="/new">Create New Restaurant</a></h3>
 <table>
   <tr>
     <th>Restaurant_id</th>
@@ -13,7 +19,7 @@
             <td><%=result[i].restaurant_id %></td>
             <td><a href="/display?_id=<%= result[i]._id %>"><%=result[i].name %></td>
             <td><%=result[i].owner %></td>
-            <td><%=result[i]._id %></td>
+
 </tr>
 
             <%}%>
@@ -22,5 +28,8 @@
   Search:<input type="text" name="search" required>
   <input type="submit" value="Search">
 </form>
-   </body>
+<form action="/logout" method="get">
+  <button>Log out</button>
+</form>
+</body>
 </html>

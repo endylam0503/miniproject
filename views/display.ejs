@@ -1,4 +1,5 @@
 <html>
+<title>COMPS381F 2018 Miniproject</title>
    <body>
      <h1><%= result.name %></h1>
      <p>
@@ -42,15 +43,49 @@
      <i>No photo found!</i> <% } else { %>
          <img src=<%="data:" +result.photo.mimetype+ ";base64,"+JSON.parse(JSON.stringify(result.photo.data)) %> />
        <% } %>
-
      </p>
+     <p>
+       <strong>GPS: </strong>
+       <% if(result.address.coord.latitude&&result.address.coord.longtitude){ %>
+       <%= "["+result.address.coord.latitude+","+result.address.coord.longtitude+"]" %>
+       <div id="map" style="width: 500px; height: 400px;"></div>
+       <% } else { %>
+         Not Provided
+       <% } %>
+    </p>
+     <script>
+       function initMap() {
+         var myLatLng = {lat: <%=result.address.coord.latitude%>,
+                        lng: <%=result.address.coord.longtitude%>
+                      };
+
+         var map = new google.maps.Map(document.getElementById('map'), {
+           zoom: 16,
+           center: myLatLng
+         });
+
+         var marker = new google.maps.Marker({
+           position: myLatLng,
+           map: map,
+           title: result.name
+         });
+       }
+     </script>
+     <script async defer
+     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTjgUEuGTdEnLwP_JcQgmg6G2dGFm-d50&callback=initMap">
+     </script>
+
 <a class="btn btn-success" role="button" href=<%="edit/" +result._id+"?owner="+result.owner %>>
-    <span class="glyphicon glyphicon-edit"></span> Edit
-    <a class="btn btn-success" role="button" href=<%="rate/" +result._id %>>
-        <span class="glyphicon glyphicon-edit"></span> Rate
-<a class="btn btn-success" role="button" href=<%="delete/" +result._id+"?owner="+result.owner %>>
-    <span class="glyphicon glyphicon-edit"></span> Delete
+     Edit </a>
+<a class="btn btn-success" role="button" href=<%="rate/" +result._id %>>
+     Rate </a>
+<a class="btn btn-success" role="button"  href=<%="delete/" +result._id+"?owner="+result.owner %>>
+     Delete </a>
 
-
+    <script>
+    $('#removeRt-btn').on('click', function(){
+      return confirm('Are you sure to delete this restaurant?');
+    })
+    </script>
    </body>
 </html>

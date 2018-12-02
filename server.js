@@ -54,6 +54,7 @@ function createUser(req, res){
       }).toArray(function(err, exist){
         console.log(exist);
         try{
+        if (users['userId'] == 'Visitor') throw ('You can not register as Visitor!')
         if (exist.length > 0) throw ('User ID was taken')
         console.log('About to insert: ' + JSON.stringify(users));
         insertUser(db,users,function(result){
@@ -63,7 +64,7 @@ function createUser(req, res){
           res.end("\ninsert was successful!");
           });
       } catch (err) {
-    res.send(alertMsg('Fail to login - ' + err))
+    res.send(alertMsg('Fail to register - ' + err))
     }
   });
 }
@@ -91,7 +92,7 @@ function login(req, res){
       req.session.userId = userId;
       global.userSet.add(userId);
       console.log('session saved Successfully!' + req.session.userId);
-      res.render('list',{userId:userId});
+      res.redirect('/read')
     } catch(err){
       res.send(alertMsg('Fail to login - ' + err))
     }
@@ -105,6 +106,12 @@ app.get('/new',function(req,res,next){
 app.post('/new', createRest)
 
 function createRest(req, res){
+  if (!req.session.userId){
+    id = 'Visitor'
+  }else{
+    id = req.session.userId
+  }
+
   var rest = {
     restaurant_id : req.body.restaurant_id,
     name : req.body.name,
@@ -123,7 +130,7 @@ function createRest(req, res){
     grade : [
 
     ],
-    owner : req.session.userId
+    owner : id
   }
   global.rt.find({
     restaurant_id:rest['restaurant_id']
@@ -133,9 +140,8 @@ function createRest(req, res){
       console.log('Creating Restaurant' + JSON.stringify(rest));
       insertRest(db,rest,function(result){
         console.log(JSON.stringify(result));
-        res.writeHead(200, {"Content-Type": "text/plain"});
-        res.write(JSON.stringify(rest));
-        res.end("\ninsert was successful!");
+        res.redirect('/read');
+
       })
     } catch (err) {
       res.send(alertMsg('Fail to insert - ' + err))
@@ -246,7 +252,7 @@ catch (err) {
 app.get('/delete/:id', remove)
 
 function remove(req,res){
-  if (req.query.owner != req.session.userId)
+  if (req.query.owner != req.session.userId && req.session.userId != 'admin')
   res.send(alertMsg('You are not the owner!!'))
     console.log(req.params.id)
     var remover = req.session.userId
@@ -259,7 +265,8 @@ function remove(req,res){
       })
     }).then(function(result){
       try{
-        if (result[0].owner != remover) throw ('You are not the owner')
+        if (result[0].owner != remover && req.session.userId != 'admin')
+        throw ('You are not the owner')
         return global.rt.remove({
           _id : id
         })
@@ -370,7 +377,7 @@ function apiRead(req, res){
     [catagory]:query
     }
     console.log(options)
-  global.rt.find(options).toArray(function (err, data) {
+  global.rt.find(options,{photo:false}).toArray(function (err, data) {
     res.send(data)
     })
   }catch (err){
@@ -382,44 +389,68 @@ function apiRead(req, res){
 app.post(apiUrl + '/restaurant/create' , apiCreateRest)
 
 function apiCreateRest(req, res){
+  var apiresultfail = {
+    status:'failed'
+  }
+  try {
+    if (!req.body.name) throw ('Restaurant name cannot be null')
+  if (req.body.address) {
+      street = req.body.address.street || ''
+      building = req.body.address.building || ''
+      zipcode = req.body.address.zipcode || ''
+      gpsLon = req.body.address.coord.longtitude || ''
+      gpsLat = req.body.address.coord.latitude || ''
+  } else {
+      street = ''
+      building = ''
+      zipcode = ''
+      gpsLon = ''
+      gpsLat = ''
+  }
+  owner = req.body.owner || 'Visitor'
+  photo = req.body.photo || {}
+
   var rest = {
     restaurant_id : req.body.restaurant_id,
     name : req.body.name,
     borough : req.body.borough,
     cuisine : req.body.cuisine,
-
+    photo : photo,
     address : {
-      street : req.body.street,
-      building : req.body.building,
-      zipcode : req.body.zipcode,
+      street : street,
+      building : building,
+      zipcode : zipcode,
       coord : {
-        latitude : req.body.latitude,
-        longtitude : req.body.longtitude,
+        latitude : gpsLat,
+        longtitude : gpsLon,
       }
     },
     grade : [
 
     ],
-    owner : req.session.userId
+    owner : owner
   }
   global.rt.find({
     restaurant_id:rest['restaurant_id']
   }).toArray(function(err, exist){
-    try{
-      if (exist.length > 0) throw ('Restaurant ID was taken')
-      console.log('Creating Restaurant' + JSON.stringify(rest));
-      insertRest(db,rest,function(result){
-        console.log(JSON.stringify(result));
-        var apiresult = {
-          status : 'ok',
-
-        }
-        res.send(apiresult);
-      })
-    } catch (err) {
-      res.send(alertMsg('Fail to insert - ' + err))
-    }
-  })
+      try{
+        if (exist.length > 0) throw ('Restaurant ID was taken')
+        console.log('Creating Restaurant' + JSON.stringify(rest));
+        insertRest(db,rest,function(result){
+          console.log(JSON.stringify(result));
+          var apiresult = {
+            status : 'ok',
+            _id : rest._id
+          }
+          res.send(apiresult);
+        })
+      } catch (err) {
+      res.send(apiresultfail)
+      }
+    })
+  } catch (err){
+  res.send(apiresultfail)
+  }
 }
 
 
@@ -448,13 +479,8 @@ function getPhoto(req, res) {
 app.get('/logout',function(req,res){
   req.session.userId = null;
   console.log('logged out session=' + req.session.userId);
-  res.render('list',{userId:req.session.userId});
+  res.redirect('/');
 })
-
-
-
-
-
 
 //app.get('*',function(req,res){
 //  console.log('Route doesnt exist');
