@@ -59,9 +59,8 @@ function createUser(req, res){
         console.log('About to insert: ' + JSON.stringify(users));
         insertUser(db,users,function(result){
           console.log(JSON.stringify(result));
-          res.writeHead(200, {"Content-Type": "text/plain"});
-          res.write(JSON.stringify(users));
-          res.end("\ninsert was successful!");
+          res.send('<script>alert("Register Success");window.history.back()</script>')
+
           });
       } catch (err) {
     res.send(alertMsg('Fail to register - ' + err))
