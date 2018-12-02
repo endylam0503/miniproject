@@ -250,7 +250,7 @@ catch (err) {
 app.get('/delete/:id', remove)
 
 function remove(req,res){
-  if (req.query.owner != req.session.userId && req.session.userId != 'admin')
+  if (req.query.owner != req.session.userId)
   res.send(alertMsg('You are not the owner!!'))
     console.log(req.params.id)
     var remover = req.session.userId
