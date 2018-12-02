@@ -209,8 +209,7 @@ try{
     name : req.body.name,
     borough : req.body.borough,
     cuisine : req.body.cuisine,
-
-
+    photo : getPhoto(req, res),
     address : {
       street : req.body.street,
       building : req.body.building,
@@ -392,14 +391,24 @@ function apiCreateRest(req, res){
     status:'failed'
   }
   try {
-    if (!req.body.name) throw ('Restaurant name cannot be null')
-  if (req.body.address) {
+    console.log(JSON.stringify(req.body))
+  if (req.body.name == null) throw ('Restaurant name cannot be null')
+
+  if (req.body.address != null) {
       street = req.body.address.street || ''
       building = req.body.address.building || ''
       zipcode = req.body.address.zipcode || ''
-      gpsLon = req.body.address.coord.longtitude || ''
-      gpsLat = req.body.address.coord.latitude || ''
-  } else {
+      console.log(req.body.address.coord)
+      if (req.body.address.coord != null){
+      console.log('1')
+      gpsLon = req.body.address.coord.longtitude
+      gpsLat = req.body.address.coord.latitude
+      } else {
+      console.log('2')
+      gpsLon = ''
+      gpsLat = ''
+      }
+    } else {
       street = ''
       building = ''
       zipcode = ''
@@ -429,10 +438,12 @@ function apiCreateRest(req, res){
     ],
     owner : owner
   }
+  console.log(rest)
   global.rt.find({
     restaurant_id:rest['restaurant_id']
   }).toArray(function(err, exist){
       try{
+        console.log(exist)
         if (exist.length > 0) throw ('Restaurant ID was taken')
         console.log('Creating Restaurant' + JSON.stringify(rest));
         insertRest(db,rest,function(result){
@@ -448,10 +459,10 @@ function apiCreateRest(req, res){
       }
     })
   } catch (err){
-  res.send(apiresultfail)
+    console.log('Restaurant name cannot be null mumumu')
+    res.send(apiresultfail)
   }
 }
-
 
 function getPhoto(req, res) {
   console.log(req.files)

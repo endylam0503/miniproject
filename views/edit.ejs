@@ -11,7 +11,7 @@
 
 
 
-					<form action= <%= "/edit/"+ result._id%> method="post">
+					<form action= <%= "/edit/"+ result._id%> method="post" encType="multipart/form-data">
             <div>
 						<input type="number" name="restaurant_id" placeholder="Restaurant_Id" value="<%= result.restaurant_id||"" %>">
             </div>
@@ -23,12 +23,6 @@
             </div>
             <div>
             <input type="text" name="cuisine" placeholder="Cuisine" value="<%= result.cuisine||"" %>">
-            </div>
-            <div>
-            <input type="text" name="photo" placeholder="Photo" value="<%= result.photo||"" %>">
-            </div>
-            <div>
-            <input type="text" name="photo_mimetype" placeholder="Photo mimetype" value="<%= result.photo_mimetype||"" %>">
             </div>
             <div>
             <input type="text" name="street" placeholder="Street" value="<%= result.address.street||"" %>">
@@ -45,6 +39,8 @@
             <div>
             <input type="number" name="longtitude" placeholder="Gps longtitude" value="<%= result.address.coord.longtitude||"" %>">
             </div>
+						<input type="file" name="rtPhoto" accept="image/*" onchange="loadImageFileAsURL()">
+		            <div class="input-margin"></div>
 						<input type="submit" value="Update">
 					</form>
 
