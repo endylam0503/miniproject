@@ -20,8 +20,8 @@ app.use(session({
 }))
 
 app.use(function (req,res,next){
-console.log(req.session.userId);
-	if (req.session.userId == undefined && req.path != "/login"){
+console.log(req.path);
+	if (req.session.userId == undefined && req.path != "/login" && !req.path.includes("/api")){
 	console.log('3')
 		res.render('main');
 	} else {
@@ -402,7 +402,7 @@ function apiRead(req, res){
 }
 
 //api to create
-app.post(apiUrl + '/restaurant/create' , apiCreateRest)
+app.post('/api/restaurant/create/:user' , apiCreateRest)
 
 function apiCreateRest(req, res){
   var apiresultfail = {
@@ -433,7 +433,7 @@ function apiCreateRest(req, res){
       gpsLon = ''
       gpsLat = ''
   }
-  owner = req.body.owner || 'Visitor'
+  owner = req.params.user
   photo = req.body.photo || {}
 
   var rest = {
