@@ -111,7 +111,7 @@ function createRest(req, res){
     id = req.session.userId
   }
 var photo = "";
-if ( req.files.rtPhoto.mimetype.includes("/image")) {
+if ( req.files.rtPhoto && req.files.rtPhoto.mimetype.includes("/image")) {
    photo = getPhoto(req, res)
 } else {
   photo = "";
