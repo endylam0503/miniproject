@@ -110,13 +110,19 @@ function createRest(req, res){
   }else{
     id = req.session.userId
   }
+var photo = "";
+if ( req.files.rtPhoto.mimetype.includes("/image")) {
+   photo = getPhoto(req, res)
+} else {
+  photo = "";
+}
 
   var rest = {
     restaurant_id : req.body.restaurant_id,
     name : req.body.name,
     borough : req.body.borough,
     cuisine : req.body.cuisine,
-    photo : getPhoto(req, res),
+    photo : photo
     address : {
       street : req.body.street,
       building : req.body.building,
