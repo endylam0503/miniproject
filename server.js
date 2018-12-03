@@ -15,9 +15,21 @@ global.rootPath = __dirname
 global.userSet = new Set()
 app.use(session({
   name: 'session',
-  keys: ['endy', 'handsome'],
+  keys: ['userId', 'handsome'],
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }))
+
+app.use(function (req,res,next){
+console.log(req.session.userId);
+	if (req.session.userId == undefined && req.path != "/login"){
+	console.log('3')
+		res.render('main');
+	} else {
+console.log(req.path)
+next()
+	
+}
+})
 
 app.use(fileUpload());
 
