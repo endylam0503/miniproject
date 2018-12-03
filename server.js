@@ -122,7 +122,7 @@ if ( req.files.rtPhoto.mimetype.includes("/image")) {
     name : req.body.name,
     borough : req.body.borough,
     cuisine : req.body.cuisine,
-    photo : photo
+    photo : photo,
     address : {
       street : req.body.street,
       building : req.body.building,
